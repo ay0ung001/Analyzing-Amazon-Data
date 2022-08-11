@@ -8,10 +8,11 @@ orders_data = pd.read_csv('amazon_orders.csv')
 # prints columns of the file
 #print(orders_data.columns)
 
+# dates orders were placed
 def orderDate():
-  # dates orders were placed
   order_dates = orders_data['Order Date']
 
+  # list and dictionary creation for order dates
   total_order_dates_dct = {}
   order_dates_lst = []
 
@@ -37,8 +38,20 @@ def orderDate():
   print("")
   print("The date with the most orders place was: " + date_most_ordered + " with " + str(most_ordered) + " orders.")
 
+# list of order ids 
+def orderID(): 
+  order_id = orders_data['Order ID']
+
+  # adding all the order ids into a list
+  order_id_lst = []
+
+  for id in order_id: 
+    order_id_lst.append(id)
+  
+  pprint.pprint(order_id_lst, width = 1, indent = 4)
+
+# total amount spent in Amazon from 01/01/06 to current day
 def totalCharged():
-  # total amount spent in Amazon from 01/01/06 to current day
   total_charged = orders_data['Total Charged']
 
   # changing the 'Total Charged' section into a list if the value is not nAn
@@ -55,5 +68,5 @@ def totalCharged():
 
 # callling functions
 # orderDate()
+# orderID()
 # totalCharged()
-

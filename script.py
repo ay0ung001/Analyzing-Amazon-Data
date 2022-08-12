@@ -36,7 +36,7 @@ def orderDate():
 
   # prints date with the most orders and the # of orders on that day
   print("")
-  print("The date with the most orders place was: " + date_most_ordered + " with " + str(most_ordered) + " orders.")
+  print("The date with the most orders placed was: " + date_most_ordered + " with " + str(most_ordered) + " orders.")
 
 # list of order ids 
 def orderID(): 
@@ -52,14 +52,14 @@ def orderID():
 
 # dictionary of the different payment types
 def paymentInstrumentType(): 
-  payment_type = orders_data['Payment Instrument Type']
+  payment_types = orders_data['Payment Instrument Type']
 
   # adding all the order ids into a list
   payment_type_lst = []
   total_payment_types_dct = {}
 
   # adding payment types to a list after replacing the numbers in Visa and clearing whitespace
-  for type in payment_type: 
+  for type in payment_types: 
     for ch in '0123456789-': 
       type = type.replace(ch, '')
     if 'and' in type: 
@@ -80,6 +80,36 @@ def paymentInstrumentType():
   print("The following are your payment types: ")
   pprint.pprint(total_payment_types_dct, width = 1, indent = 4)
 
+# dates packages were shipped
+def shipmentDate():
+  shipment_dates = orders_data['Shipment Date']
+  
+  # list and dictionary creation for shipment dates
+  total_shipment_dates_dct = {}
+  shipment_dates_lst = []
+
+  # total days ordered on Amazon from 01/01/06 to current day
+  for shipment_date in shipment_dates: 
+    if pd.isna(shipment_date) == False:
+      shipment_dates_lst.append(shipment_date)
+
+  # updating values from list to dictionary 
+  for date in shipment_dates_lst: 
+    if date in total_shipment_dates_dct:
+      total_shipment_dates_dct[date] += 1
+    else: 
+      total_shipment_dates_dct[date] = 1
+
+  # using pprint for readability 
+  print("Shipment Dates: ")
+  pprint.pprint(total_shipment_dates_dct, width = 1, indent = 4)
+
+  most_shipped = max(total_shipment_dates_dct.values())
+  date_most_shipped = max(total_shipment_dates_dct, key = total_shipment_dates_dct.get)
+
+  print("")
+  print("The date with the most orders shipped was: " + date_most_shipped + " with " + str(most_shipped) + " packages shipped.")
+  
 # total amount spent in Amazon from 01/01/06 to current day
 def totalCharged():
   total_charged = orders_data['Total Charged']

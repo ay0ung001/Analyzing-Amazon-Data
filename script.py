@@ -1,6 +1,7 @@
 """
   file analyzes Amazon data from a user's order history, file is named 'amazon_orders.csv'
   must have the csv file in the same folder as the script to run correctly
+  ideally, would want it from the date 01/01/2006 to current day
   Date: 11 Aug. 2022
 """
 
@@ -61,7 +62,7 @@ def orderDate():
   total_order_dates_dct = {}
   order_dates_lst = []
 
-  # total days ordered on Amazon from 01/01/06 to current day
+  # total days ordered on Amazon from MM/DD/YY to MM/DD/YY
   for order_date in order_dates: 
     order_dates_lst.append(order_date)
 
@@ -164,7 +165,7 @@ def shipmentDate():
 
   continueOrNot()
 
-# total amount spent in Amazon from 01/01/06 to current day
+# total amount spent in Amazon from MM/DD/YY to MM/DD/YY
 def totalCharged():
   total_charged = orders_data['Total Charged']
 

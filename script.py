@@ -1,12 +1,57 @@
+"""
+  file analyzes Amazon data from a user's order history, file is named 'amazon_orders.csv'
+  must have the csv file in the same folder as the script to run correctly
+  Date: 11 Aug. 2022
+"""
+
 import pandas as pd
 import math
 import pprint
+import re
 
 # read file
 orders_data = pd.read_csv('amazon_orders.csv')
 
-# prints columns of the file
-#print(orders_data.columns)
+# main class that interacts with the user
+def main():
+  print("What information would you like to access?")
+  print("")
+  print("""
+  KEY:  
+        Order Date: dates orders were placed
+        Order ID: list of order ids 
+        Payment Instrument Type: dictionary of the different payment types used 
+        Shipment Date: dates packages were shipped
+        Total Charged: total amount spent on Amazon from 01/01/06 to date orders were downloaded
+  """)
+  print("")
+
+  user_input = input("Type: OD for 'Order Date', OI for 'Order ID', PIT for 'Payment Instrument Type, SD for 'Shipment Date' or TC for 'Total Charged': ")
+  if user_input == 'OD': 
+    orderDate()
+  elif user_input == 'OI': 
+    orderID()
+  elif user_input == 'PIT': 
+    paymentInstrumentType()
+  elif user_input == 'SD': 
+    shipmentDate()
+  elif user_input == 'TC': 
+    totalCharged()
+  elif user_input == "c":
+    main()
+  elif user_input == "x": 
+    print("Thank you.")
+  else: 
+    print("Invalid Input.")
+
+# appears at the end of each method prompting the user to continue or not
+def continueOrNot(): 
+  user_input = input("Press 'c' to continue or 'x' to exit: ")
+  
+  if user_input == 'c': 
+    main()
+  else: 
+    print("Thank you!")
 
 # dates orders were placed
 def orderDate():
@@ -28,6 +73,7 @@ def orderDate():
       total_order_dates_dct[date] = 1
 
   # using pprint for readability 
+  print("Order Dates: ")
   pprint.pprint(total_order_dates_dct, width = 1, indent = 4)
 
   # gets the date with the most orders and the # of orders
@@ -37,6 +83,8 @@ def orderDate():
   # prints date with the most orders and the # of orders on that day
   print("")
   print("The date with the most orders placed was: " + date_most_ordered + " with " + str(most_ordered) + " orders.")
+
+  continueOrNot()
 
 # list of order ids 
 def orderID(): 
@@ -48,7 +96,10 @@ def orderID():
   for id in order_id: 
     order_id_lst.append(id)
   
+  print("Order IDs: ")
   pprint.pprint(order_id_lst, width = 1, indent = 4)
+
+  continueOrNot()
 
 # dictionary of the different payment types
 def paymentInstrumentType(): 
@@ -68,7 +119,6 @@ def paymentInstrumentType():
     else: 
       payment_type_lst.append(type.strip())
     
-  
   # updating values from list to dictionary
   for type in payment_type_lst:
     if type in total_payment_types_dct: 
@@ -79,6 +129,8 @@ def paymentInstrumentType():
   # printing the payment types
   print("The following are your payment types: ")
   pprint.pprint(total_payment_types_dct, width = 1, indent = 4)
+
+  continueOrNot()
 
 # dates packages were shipped
 def shipmentDate():
@@ -109,7 +161,9 @@ def shipmentDate():
 
   print("")
   print("The date with the most orders shipped was: " + date_most_shipped + " with " + str(most_shipped) + " packages shipped.")
-  
+
+  continueOrNot()
+
 # total amount spent in Amazon from 01/01/06 to current day
 def totalCharged():
   total_charged = orders_data['Total Charged']
@@ -126,8 +180,7 @@ def totalCharged():
   total_spent = sum(total_charged_lst)
   print("You spent a total of: $" + str(round(total_spent,2)))
 
-# callling functions
-# orderDate()
-# orderID()
-# paymentInstrumentType()
-# totalCharged()
+  continueOrNot()
+
+# calling main function 
+main()

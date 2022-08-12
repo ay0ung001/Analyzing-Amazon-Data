@@ -50,6 +50,36 @@ def orderID():
   
   pprint.pprint(order_id_lst, width = 1, indent = 4)
 
+# dictionary of the different payment types
+def paymentInstrumentType(): 
+  payment_type = orders_data['Payment Instrument Type']
+
+  # adding all the order ids into a list
+  payment_type_lst = []
+  total_payment_types_dct = {}
+
+  # adding payment types to a list after replacing the numbers in Visa and clearing whitespace
+  for type in payment_type: 
+    for ch in '0123456789-': 
+      type = type.replace(ch, '')
+    if 'and' in type: 
+      new_type = re.sub(' +', ' ',type) # re.sub(pattern, repl, string, count=0, flags=0)
+      payment_type_lst.append(new_type)
+    else: 
+      payment_type_lst.append(type.strip())
+    
+  
+  # updating values from list to dictionary
+  for type in payment_type_lst:
+    if type in total_payment_types_dct: 
+      total_payment_types_dct[type] += 1
+    else: 
+      total_payment_types_dct[type] = 1
+
+  # printing the payment types
+  print("The following are your payment types: ")
+  pprint.pprint(total_payment_types_dct, width = 1, indent = 4)
+
 # total amount spent in Amazon from 01/01/06 to current day
 def totalCharged():
   total_charged = orders_data['Total Charged']
@@ -69,4 +99,5 @@ def totalCharged():
 # callling functions
 # orderDate()
 # orderID()
+# paymentInstrumentType()
 # totalCharged()
